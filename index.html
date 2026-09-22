@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Columbia Business School - MBA Job Search OS</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            columbia: {
+              navy: '#002B49',
+              blue: '#75B2DD',
+              light: '#EBF3FA',
+              accent: '#1D70B8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    }
+
+    .glass-card-hover {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .glass-card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 43, 73, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      border-color: rgba(117, 178, 221, 0.4);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .tab-active {
+      background-color: #002B49;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 43, 73, 0.2);
+    }
+
+    .tab-inactive {
+      color: #475569;
+      background-color: transparent;
+    }
+    .tab-inactive:hover {
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-900 flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- CBS Logo & Brand Header -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-columbia-navy text-columbia-blue flex items-center justify-center font-extrabold text-lg shadow-md ring-2 ring-columbia-blue/20">
+            CBS
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-slate-900 tracking-tight text-lg leading-none">Career OS</span>
+              <span class="bg-columbia-light text-columbia-navy text-[10px] font-bold px-2 py-0.5 rounded-full border border-columbia-blue/30">12Twenty Integrated</span>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium tracking-wide uppercase">Columbia Business School</span>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex items-center bg-slate-100/80 p-1.5 rounded-xl border border-slate-200/80 gap-1 text-xs sm:text-sm font-semibold">
+          <button id="nav-today" onclick="switchTab('today')" class="tab-active flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all">
+            <i data-lucide="sparkles" class="w-4 h-4 text-columbia-blue"></i>
+            <span class="hidden sm:inline">Today's Jobs</span>
+            <span class="sm:hidden">Today</span>
+            <span id="badge-today-count" class="bg-columbia-blue text-columbia-navy text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">0</span>
+          </button>
+
+          <button id="nav-matrix" onclick="switchTab('matrix')" class="tab-inactive flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all">
+            <i data-lucide="briefcase" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Opportunity Matrix</span>
+            <span class="sm:hidden">Matrix</span>
+            <span id="badge-all-count" class="bg-slate-200 text-slate-700 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">0</span>
+          </button>
+
+          <button id="nav-resume" onclick="switchTab('resume')" class="tab-inactive flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Resume & Profile</span>
+            <span class="sm:hidden">Profile</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- View 1: Today's Ingested Opportunities Tab -->
+    <section id="view-today" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div>
+          <div class="flex items-center gap-2 text-columbia-navy font-bold text-xs tracking-wider uppercase mb-1">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-500 fill-amber-500"></i> Daily Ingestion Pipeline
+          </div>
+          <h1 class="text-2xl font-black text-slate-900 tracking-tight">Today's Ingested Opportunities</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Fresh job postings pulled from <strong class="text-slate-700">12Twenty (business-columbia.12twenty.com)</strong>, LinkedIn, and corporate portals in the last 24 hours.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="triggerSyncPipeline()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-columbia-navy text-white font-bold text-xs hover:bg-slate-800 transition-all shadow-md active:scale-95">
+            <i data-lucide="refresh-cw" id="sync-icon" class="w-3.5 h-3.5"></i>
+            <span>Sync 12Twenty Feed</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Overview -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">New Listings Today</div>
+          <div id="stat-new-today" class="text-2xl font-black text-columbia-navy mt-1">0</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">High Alignment (>80%)</div>
+          <div id="stat-high-fit" class="text-2xl font-black text-emerald-600 mt-1">0</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">CBS Alum Connections</div>
+          <div id="stat-network-matches" class="text-2xl font-black text-blue-600 mt-1">0</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">12Twenty Direct Source</div>
+          <div id="stat-12twenty-count" class="text-2xl font-black text-purple-600 mt-1">0</div>
+        </div>
+      </div>
+
+      <!-- Today's Job Grid -->
+      <div id="grid-today" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- View 2: All Opportunities Matrix Tab -->
+    <section id="view-matrix" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+        <div>
+          <h1 class="text-2xl font-black text-slate-900 tracking-tight">Opportunity Matrix</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Comprehensive database of all ingested roles across target industries: Strategy, Tech, Media, Consulting & Product.
+          </p>
+        </div>
+
+        <!-- Filter Controls Bar -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 pt-2">
+          
+          <!-- Search input -->
+          <div class="md:col-span-5 relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+            <input 
+              type="text" 
+              id="search-input" 
+              oninput="applyFilters()" 
+              placeholder="Search title, company, skills, or location..."
+              class="w-full pl-9 pr-4 py-2 text-xs font-medium rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-columbia-navy"
+            >
+          </div>
+
+          <!-- Min Fit Slider -->
+          <div class="md:col-span-4 flex items-center gap-3 bg-slate-50/50 px-3 py-1.5 rounded-xl border border-slate-200">
+            <i data-lucide="sliders" class="w-4 h-4 text-columbia-navy shrink-0"></i>
+            <span class="text-xs font-bold text-slate-600 shrink-0">Min Fit:</span>
+            <input 
+              type="range" 
+              id="fit-slider" 
+              min="0" 
+              max="90" 
+              step="5" 
+              value="0" 
+              oninput="updateSliderLabel(this.value); applyFilters();"
+              class="w-full accent-columbia-navy cursor-pointer"
+            >
+            <span id="slider-val" class="text-xs font-black text-columbia-navy min-w-[32px]">0%</span>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="md:col-span-3 flex items-center gap-2">
+            <i data-lucide="arrow-up-down" class="w-4 h-4 text-slate-400 shrink-0"></i>
+            <select 
+              id="sort-select" 
+              onchange="applyFilters()" 
+              class="w-full py-2 px-3 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-columbia-navy cursor-pointer"
+            >
+              <option value="fit-desc">Sort by Fit Score (High to Low)</option>
+              <option value="interest-desc">Sort by Interest Score</option>
+              <option value="date-desc">Sort by Date Posted (Newest)</option>
+              <option value="company-asc">Sort by Company (A-Z)</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Opportunity Matrix Grid -->
+      <div id="grid-matrix" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- View 3: Resume & Target Profile Management Tab -->
+    <section id="view-resume" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Resume & Profile Strategy</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          Manage target preferences and active resume versions used for automated AI scoring against 12Twenty listings.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Upload New Version & Target Setup -->
+        <div class="space-y-6">
+          
+          <!-- Upload Simulation Card -->
+          <div class="glass-card p-6 rounded-2xl bg-white space-y-4">
+            <div class="flex items-center gap-2 text-slate-900 font-bold text-sm">
+              <i data-lucide="upload-cloud" class="w-5 h-5 text-columbia-navy"></i>
+              <span>Upload New Resume Version</span>
+            </div>
+            
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Version Title</label>
+              <input 
+                type="text" 
+                id="resume-version-title" 
+                placeholder="e.g. CBS MBA Media & Tech Core 2026" 
+                class="w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-columbia-navy"
+              >
+            </div>
+
+            <div 
+              onclick="simulateUpload()" 
+              class="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center hover:border-columbia-blue hover:bg-columbia-light/30 transition-all cursor-pointer group"
+            >
+              <i data-lucide="file-up" class="w-10 h-10 text-slate-400 group-hover:text-columbia-navy mx-auto mb-2 transition-colors"></i>
+              <div class="text-xs font-bold text-slate-800">Click to upload target PDF</div>
+              <p class="text-[10px] text-slate-400 mt-1">Parses skills, career timeline, and quantitative keywords</p>
+            </div>
+
+            <div id="upload-status" class="hidden p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-800 font-medium flex items-center gap-2">
+              <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-blue-600"></i>
+              <span>Parsing resume structure and re-scoring 12Twenty pipeline...</span>
+            </div>
+          </div>
+
+          <!-- Candidate Target Settings -->
+          <div class="glass-card p-6 rounded-2xl bg-white space-y-4">
+            <div class="flex items-center gap-2 text-slate-900 font-bold text-sm border-b border-slate-100 pb-3">
+              <i data-lucide="target" class="w-5 h-5 text-columbia-navy"></i>
+              <span>MBA Targeting Profile</span>
+            </div>
+
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Target Industries</span>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Media & Entertainment</span>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Technology</span>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Management Consulting</span>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Sports Media</span>
+              </div>
+            </div>
+
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Target Functions</span>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Corporate Strategy</span>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Product Strategy</span>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Business Development</span>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg border border-slate-200">Operations</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Active Parsed Resume Visualizer -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="glass-card p-6 rounded-2xl bg-white space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full mb-1">
+                  <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Primary Active Document
+                </span>
+                <h2 id="parsed-resume-title" class="text-lg font-bold text-slate-900">Columbia_MBA_Resume_2026.pdf</h2>
+              </div>
+              <span class="text-xs text-slate-400 font-semibold">Graduation: May 2027</span>
+            </div>
+
+            <!-- Parsed History Sections -->
+            <div class="space-y-5">
+              
+              <!-- Education -->
+              <div>
+                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <i data-lucide="graduation-cap" class="w-4 h-4 text-columbia-navy"></i> Education
+                </h3>
+                <div class="space-y-2">
+                  <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex justify-between items-center text-xs">
+                    <div>
+                      <span class="font-bold text-slate-900">Columbia Business School</span>
+                      <span class="text-slate-500 block">Master of Business Administration (MBA)</span>
+                    </div>
+                    <span class="font-semibold text-slate-500">2025 - 2027</span>
+                  </div>
+                  <div class="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex justify-between items-center text-xs">
+                    <div>
+                      <span class="font-bold text-slate-900">University of Michigan</span>
+                      <span class="text-slate-500 block">Bachelor of Arts in Economics</span>
+                    </div>
+                      <span class="font-semibold text-slate-500">2017 - 2021</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Experience Timeline -->
+              <div>
+                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <i data-lucide="briefcase" class="w-4 h-4 text-columbia-navy"></i> Experience Highlights
+                </h3>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3 text-xs">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <span class="font-extrabold text-slate-900 text-sm">EY (Ernst & Young)</span>
+                      <span class="text-columbia-navy font-bold block">Senior Consultant - Strategy & Advisory</span>
+                    </div>
+                    <span class="font-semibold text-slate-500">2021 - 2025</span>
+                  </div>
+                  <ul class="list-disc list-inside space-y-1.5 text-slate-600 leading-relaxed">
+                    <li>Led client-facing advisory teams on global corporate restructurings and cross-border financial optimization.</li>
+                    <li>Executed structured data analytics utilizing SQL, PowerBI, and Excel to identify $12M+ in operating efficiencies.</li>
+                    <li>Managed executive stakeholder alignment across Fortune 500 accounts in technology and media.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Skill Tags -->
+              <div>
+                <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <i data-lucide="code" class="w-4 h-4 text-columbia-navy"></i> Extracted Skills & Tools
+                </h3>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">Financial Modeling</span>
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">SQL</span>
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">Excel / VBA</span>
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">Project Management</span>
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">Client Advisory</span>
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">PowerBI</span>
+                  <span class="px-2.5 py-1 bg-columbia-light text-columbia-navy font-bold text-xs rounded-lg border border-columbia-blue/30">Process Improvement</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AI Job Analysis & Detailed View Modal -->
+  <div id="modal-backdrop" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+    <div id="modal-container" class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 flex flex-col transform scale-95 transition-transform duration-200">
+      
+      <!-- Modal Header -->
+      <div class="sticky top-0 bg-white z-10 border-b border-slate-100 p-6 flex items-start justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="modal-company" class="text-sm font-extrabold text-slate-700 flex items-center gap-1.5">
+              <i data-lucide="building-2" class="w-4 h-4 text-columbia-navy"></i> Company
+            </span>
+            <span id="modal-source-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+              Source
+            </span>
+          </div>
+          <h2 id="modal-title" class="text-xl font-black text-slate-900 tracking-tight">Job Title</h2>
+          <div class="flex items-center gap-4 text-xs text-slate-500 mt-2">
+            <span id="modal-location" class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Location</span>
+            <span id="modal-date" class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Posted Date</span>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="p-2 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-6 flex-1">
+        
+        <!-- AI Scoring Highlight Banner -->
+        <div class="bg-columbia-navy text-white rounded-2xl p-6 shadow-md relative overflow-hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 relative z-10">
+            <div>
+              <span class="text-xs font-extrabold tracking-widest uppercase text-columbia-blue flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> AI Fit Engine Breakdown
+              </span>
+              <div class="text-xl font-bold mt-1">100-Point Strategic Alignment Score</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-center bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10">
+                <div class="text-[10px] uppercase font-bold text-columbia-blue">Overall Fit</div>
+                <div id="modal-fit-score" class="text-2xl font-black text-emerald-400">0%</div>
+              </div>
+              <div class="text-center bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10">
+                <div class="text-[10px] uppercase font-bold text-columbia-blue">Interest</div>
+                <div id="modal-interest-score" class="text-2xl font-black text-amber-300">0%</div>
+              </div>
+            </div>
+          </div>
+
+          <p id="modal-fit-reasoning" class="text-xs sm:text-sm text-slate-200 leading-relaxed relative z-10">
+            Reasoning statement...
+          </p>
+
+          <!-- Score Component Grids (Experience, Function, Industry, Education, Tech, Seniority) -->
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-5 pt-4 border-t border-white/10 text-center relative z-10">
+            <div class="p-2 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[10px] text-columbia-blue font-bold">Experience</div>
+              <div id="score-exp" class="font-extrabold text-sm text-white mt-0.5">0/25</div>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[10px] text-columbia-blue font-bold">Function</div>
+              <div id="score-func" class="font-extrabold text-sm text-white mt-0.5">0/20</div>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[10px] text-columbia-blue font-bold">Industry</div>
+              <div id="score-ind" class="font-extrabold text-sm text-white mt-0.5">0/15</div>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[10px] text-columbia-blue font-bold">Education</div>
+              <div id="score-edu" class="font-extrabold text-sm text-white mt-0.5">0/10</div>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[10px] text-columbia-blue font-bold">Technical</div>
+              <div id="score-tech" class="font-extrabold text-sm text-white mt-0.5">0/10</div>
+            </div>
+            <div class="p-2 bg-white/5 rounded-xl border border-white/5">
+              <div class="text-[10px] text-columbia-blue font-bold">Seniority</div>
+              <div id="score-sen" class="font-extrabold text-sm text-white mt-0.5">0/10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CBS Network Alumni Connections Box -->
+        <div id="modal-network-box" class="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 hidden">
+          <h4 class="font-bold text-xs uppercase tracking-wider text-emerald-900 mb-3 flex items-center gap-2">
+            <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i> CBS Alumni & Professional Network
+          </h4>
+          <div id="modal-network-list" class="space-y-2">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Strengths & Resume Recommendations -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 mb-2 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i> Core Background Strengths
+            </h4>
+            <ul id="modal-strengths" class="space-y-2 text-xs text-slate-700">
+              <!-- Rendered dynamically -->
+            </ul>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 mb-2 flex items-center gap-1.5">
+              <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i> Resume Tailoring Guidance
+            </h4>
+            <ul id="modal-recommendations" class="space-y-2 text-xs text-slate-700">
+              <!-- Rendered dynamically -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job Description Text -->
+        <div>
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 mb-2">Job Description</h4>
+          <div id="modal-description" class="text-xs text-slate-600 whitespace-pre-line leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100 max-h-60 overflow-y-auto">
+            Description body...
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="sticky bottom-0 bg-white border-t border-slate-100 p-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-500">Status:</span>
+          <select id="modal-status-select" onchange="updateJobStatusFromModal(this.value)" class="text-xs font-bold bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 cursor-pointer focus:outline-none">
+            <option value="NOT_APPLIED">Not Applied</option>
+            <option value="SAVED">Saved</option>
+            <option value="APPLIED">Applied</option>
+            <option value="INTERVIEWING">Interviewing</option>
+            <option value="OFFER_RECEIVED">Offer Received</option>
+            <option value="REJECTED">Passed</option>
+          </select>
+        </div>
+
+        <a id="modal-apply-btn" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-columbia-navy text-white font-extrabold text-xs hover:bg-slate-800 transition-all shadow-md">
+          <span>Apply Directly</span>
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Application Logic JavaScript -->
+  <script>
+    // System Master Dataset (Ingested Jobs Seed with 12Twenty & LinkedIn integration)
+    let jobsData = [
+      {
+        id: "job-1001",
+        title: "Strategy & Business Development Associate",
+        company: "Netflix",
+        location: "Los Angeles, CA",
+        datePosted: "2026-09-21T08:00:00Z",
+        isToday: true,
+        source: "12Twenty",
+        sourceUrl: "https://business-columbia.12twenty.com/job/1001",
+        status: "SAVED",
+        description: "Develop strategic initiatives across Netflix content and studio operations. Work directly with senior leadership to evaluate streaming partnerships, content investments, and global market expansion models.",
+        fitScore: 88,
+        interestScore: 96,
+        scoring: { exp: 23, func: 18, ind: 14, edu: 10, tech: 8, sen: 9, reasoning: "Outstanding match with consulting background from EY combined with Columbia MBA strategy focus." },
+        strengths: ["Strong quantitative advisory toolkit from EY", "Cross-functional client management track record", "Direct alignment with CBS Media Strategy curriculum"],
+        recommendations: ["Frame EY global advisory projects around structured financial valuation and media deal models."],
+        network: [
+          { name: "Jane Smith", title: "Director of Corporate Strategy", degree: "CBS MBA '22", reason: "Direct CBS Alum match on LinkedIn & Columbia Directory" }
+        ]
+      },
+      {
+        id: "job-1002",
+        title: "Senior Product Manager - Fan Engagement",
+        company: "ESPN",
+        location: "New York, NY",
+        datePosted: "2026-09-21T09:30:00Z",
+        isToday: true,
+        source: "12Twenty",
+        sourceUrl: "https://business-columbia.12twenty.com/job/1002",
+        status: "NOT_APPLIED",
+        description: "Lead digital product features for ESPN direct-to-consumer streaming apps. Define product strategy, multi-platform feature roadmaps, and digital engagement metrics for millions of sports fans globally.",
+        fitScore: 78,
+        interestScore: 92,
+        scoring: { exp: 18, func: 16, ind: 13, edu: 10, tech: 10, sen: 8, reasoning: "Solid quantitative and technical foundation; user product management experience can be highlighted from consulting transformations." },
+        strengths: ["SQL, PowerBI, and data analytics capability", "Structured problem-solving methodology"],
+        recommendations: ["Emphasize technology transformation initiatives executed at EY."],
+        network: []
+      },
+      {
+        id: "job-1003",
+        title: "Corporate Strategy Associate",
+        company: "Disney",
+        location: "Burbank, CA",
+        datePosted: "2026-09-21T07:15:00Z",
+        isToday: true,
+        source: "LinkedIn",
+        sourceUrl: "https://linkedin.com/jobs/view/1003",
+        status: "APPLIED",
+        description: "Evaluate corporate M&A, direct-to-consumer expansion, and long-term strategic growth opportunities across Disney Entertainment and Experiences segments.",
+        fitScore: 91,
+        interestScore: 94,
+        scoring: { exp: 24, func: 19, ind: 14, edu: 10, tech: 8, sen: 9, reasoning: "Near-perfect strategic alignment for top-tier MBA candidate with prior advisory experience." },
+        strengths: ["Flawless match for corporate strategy advisory", "Strong M&A and financial modeling foundation"],
+        recommendations: ["Position EY client re-organization work as strategic corporate formulation."],
+        network: [
+          { name: "Marcus Vance", title: "VP, Business Development", degree: "CBS MBA '19", reason: "Former CBS Entertainment Club VP" }
+        ]
+      },
+      {
+        id: "job-1004",
+        title: "Product Strategy Manager - Google Cloud",
+        company: "Google",
+        location: "New York, NY",
+        datePosted: "2026-09-20T14:00:00Z",
+        isToday: false,
+        source: "LinkedIn",
+        sourceUrl: "https://linkedin.com/jobs/view/1004",
+        status: "NOT_APPLIED",
+        description: "Drive product strategy and commercial go-to-market operational roadmaps for enterprise cloud solutions.",
+        fitScore: 82,
+        interestScore: 89,
+        scoring: { exp: 20, func: 17, ind: 11, edu: 10, tech: 9, sen: 8, reasoning: "Strong enterprise advisory background aligns well with B2B cloud business strategy." },
+        strengths: ["Deep enterprise client engagement experience", "Technical query skills in SQL"],
+        recommendations: ["Highlight quantitative Economics coursework from University of Michigan."],
+        network: []
+      },
+      {
+        id: "job-1005",
+        title: "Senior Consultant - Strategy & Operations",
+        company: "Deloitte",
+        location: "New York, NY",
+        datePosted: "2026-09-20T11:00:00Z",
+        isToday: false,
+        source: "12Twenty",
+        sourceUrl: "https://business-columbia.12twenty.com/job/1005",
+        status: "INTERVIEWING",
+        description: "Advise Fortune 500 clients on digital transformation, operational efficiency, and corporate growth strategy.",
+        fitScore: 95,
+        interestScore: 80,
+        scoring: { exp: 25, func: 20, ind: 15, edu: 10, tech: 9, sen: 10, reasoning: "Direct functional equivalency with EY consulting background and CBS MBA curriculum." },
+        strengths: ["Immediate project management leadership readiness", "Flawless client management track record"],
+        recommendations: ["Highlight leadership role in cross-border advisory engagements."],
+        network: []
+      },
+      {
+        id: "job-1006",
+        title: "Management Consultant - Technology & Media Practice",
+        company: "McKinsey",
+        location: "New York, NY",
+        datePosted: "2026-09-19T16:00:00Z",
+        isToday: false,
+        source: "12Twenty",
+        sourceUrl: "https://business-columbia.12twenty.com/job/1006",
+        status: "APPLIED",
+        description: "Solve fundamental strategic challenges for global media, sports, and technology conglomerates.",
+        fitScore: 92,
+        interestScore: 90,
+        scoring: { exp: 24, func: 19, ind: 14, edu: 10, tech: 8, sen: 9, reasoning: "Ideal candidate background for Post-MBA Associate hire in TMT practice." },
+        strengths: ["Top-tier consulting problem-solving framework", "Cross-industry adaptability"],
+        recommendations: ["Emphasize CBS coursework in Media Strategy and Corporate Valuation."],
+        network: [
+          { name: "David Chen", title: "Associate Partner", degree: "U. Michigan '18 / CBS '22", reason: "Dual Alum Connection" }
+        ]
+      }
+    ];
+
+    let currentActiveJob = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderAllViews();
+    });
+
+    function switchTab(tab) {
+      document.getElementById('view-today').classList.add('hidden');
+      document.getElementById('view-matrix').classList.add('hidden');
+      document.getElementById('view-resume').classList.add('hidden');
+
+      document.getElementById('nav-today').className = 'tab-inactive flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all';
+      document.getElementById('nav-matrix').className = 'tab-inactive flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all';
+      document.getElementById('nav-resume').className = 'tab-inactive flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all';
+
+      if (tab === 'today') {
+        document.getElementById('view-today').classList.remove('hidden');
+        document.getElementById('nav-today').className = 'tab-active flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all';
+      } else if (tab === 'matrix') {
+        document.getElementById('view-matrix').classList.remove('hidden');
+        document.getElementById('nav-matrix').className = 'tab-active flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all';
+      } else if (tab === 'resume') {
+        document.getElementById('view-resume').classList.remove('hidden');
+        document.getElementById('nav-resume').className = 'tab-active flex items-center gap-2 px-3.5 py-2 rounded-lg transition-all';
+      }
+    }
+
+    function renderAllViews() {
+      updateMetrics();
+      renderTodayGrid();
+      renderMatrixGrid();
+    }
+
+    function updateMetrics() {
+      const todayJobs = jobsData.filter(j => j.isToday);
+      document.getElementById('badge-today-count').innerText = todayJobs.length;
+      document.getElementById('badge-all-count').innerText = jobsData.length;
+
+      document.getElementById('stat-new-today').innerText = todayJobs.length;
+      document.getElementById('stat-high-fit').innerText = jobsData.filter(j => j.fitScore >= 80).length;
+      
+      const totalNetwork = jobsData.reduce((acc, j) => acc + (j.network ? j.network.length : 0), 0);
+      document.getElementById('stat-network-matches').innerText = totalNetwork;
+
+      const total12Twenty = jobsData.filter(j => j.source === '12Twenty').length;
+      document.getElementById('stat-12twenty-count').innerText = total12Twenty;
+    }
+
+    function createJobCardHTML(job) {
+      const statusBadgeClasses = {
+        'NOT_APPLIED': 'bg-slate-100 text-slate-600 border-slate-200',
+        'SAVED': 'bg-purple-50 text-purple-700 border-purple-200',
+        'APPLIED': 'bg-blue-50 text-blue-700 border-blue-200',
+        'INTERVIEWING': 'bg-amber-50 text-amber-700 border-amber-200',
+        'OFFER_RECEIVED': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        'REJECTED': 'bg-rose-50 text-rose-700 border-rose-200'
+      };
+
+      const statusLabels = {
+        'NOT_APPLIED': 'Not Applied',
+        'SAVED': 'Saved',
+        'APPLIED': 'Applied',
+        'INTERVIEWING': 'Interviewing',
+        'OFFER_RECEIVED': 'Offer Received',
+        'REJECTED': 'Passed'
+      };
+
+      const fitColor = job.fitScore >= 85 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' :
+                       job.fitScore >= 75 ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-700 bg-amber-50 border-amber-200';
+
+      return `
+        <div class="glass-card glass-card-hover rounded-2xl p-5 flex flex-col justify-between bg-white relative">
+          <div>
+            <!-- Header -->
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
+                    <i data-lucide="building-2" class="w-3.5 h-3.5 text-columbia-navy"></i>
+                    ${job.company}
+                  </span>
+                  <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                    ${job.source}
+                  </span>
+                </div>
+                <h3 onclick="openJobModal('${job.id}')" class="text-base font-extrabold text-slate-900 cursor-pointer hover:text-columbia-accent transition-colors line-clamp-1">
+                  ${job.title}
+                </h3>
+              </div>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${statusBadgeClasses[job.status] || statusBadgeClasses['NOT_APPLIED']}">
+                ${statusLabels[job.status] || 'Not Applied'}
+              </span>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-4 flex items-center gap-3 font-medium">
+              <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${job.location}</span>
+              <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${new Date(job.datePosted).toLocaleDateString()}</span>
+            </p>
+
+            <p class="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+              ${job.description}
+            </p>
+
+            <!-- Score Pill -->
+            <div class="grid grid-cols-2 gap-2 mb-4 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <div>
+                <div class="text-[9px] uppercase font-bold tracking-wider text-slate-400">Fit Alignment</div>
+                <div class="inline-flex items-center gap-1 font-black text-xs px-2 py-0.5 rounded-md border mt-0.5 ${fitColor}">
+                  ${job.fitScore}%
+                </div>
+              </div>
+              <div>
+                <div class="text-[9px] uppercase font-bold tracking-wider text-slate-400">Personal Interest</div>
+                <div class="inline-flex items-center gap-1 font-black text-xs px-2 py-0.5 rounded-md border border-purple-200 bg-purple-50 text-purple-700 mt-0.5">
+                  ${job.interestScore}%
+                </div>
+              </div>
+            </div>
+
+            <!-- Network Connections Match Pill -->
+            ${job.network && job.network.length > 0 ? `
+              <div class="flex items-center gap-2 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 rounded-xl p-2 mb-4 font-semibold">
+                <i data-lucide="users" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                <span class="truncate">${job.network.length} CBS Network Contact${job.network.length > 1 ? 's' : ''} matched</span>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Card Action Footer -->
+          <div class="flex items-center justify-between pt-3 border-t border-slate-100 mt-2">
+            <select onchange="updateJobStatus('${job.id}', this.value)" class="text-xs font-bold bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 cursor-pointer focus:outline-none">
+              <option value="NOT_APPLIED" ${job.status === 'NOT_APPLIED' ? 'selected' : ''}>Status: Not Applied</option>
+              <option value="SAVED" ${job.status === 'SAVED' ? 'selected' : ''}>Status: Saved</option>
+              <option value="APPLIED" ${job.status === 'APPLIED' ? 'selected' : ''}>Status: Applied</option>
+              <option value="INTERVIEWING" ${job.status === 'INTERVIEWING' ? 'selected' : ''}>Status: Interviewing</option>
+              <option value="OFFER_RECEIVED" ${job.status === 'OFFER_RECEIVED' ? 'selected' : ''}>Status: Offer Received</option>
+              <option value="REJECTED" ${job.status === 'REJECTED' ? 'selected' : ''}>Status: Passed</option>
+            </select>
+
+            <button onclick="openJobModal('${job.id}')" class="inline-flex items-center gap-1 text-xs font-extrabold text-columbia-navy hover:text-columbia-accent transition-colors">
+              <span>View Analysis</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTodayGrid() {
+      const todayJobs = jobsData.filter(j => j.isToday);
+      const grid = document.getElementById('grid-today');
+      if (todayJobs.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-8">
+            <i data-lucide="check-circle" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
+            <h3 class="text-sm font-bold text-slate-700">All daily jobs reviewed</h3>
+            <p class="text-xs text-slate-500 mt-1">Check back tomorrow for automated 12Twenty ingestion updates.</p>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = todayJobs.map(job => createJobCardHTML(job)).join('');
+      }
+      lucide.createIcons();
+    }
+
+    function renderMatrixGrid() {
+      const grid = document.getElementById('grid-matrix');
+      let filtered = [...jobsData];
+
+      // Search Filter
+      const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+      if (searchVal) {
+        filtered = filtered.filter(j => 
+          j.title.toLowerCase().includes(searchVal) || 
+          j.company.toLowerCase().includes(searchVal) || 
+          j.location.toLowerCase().includes(searchVal) ||
+          j.description.toLowerCase().includes(searchVal)
+        );
+      }
+
+      // Min Fit Filter
+      const minFitVal = parseInt(document.getElementById('fit-slider').value) || 0;
+      if (minFitVal > 0) {
+        filtered = filtered.filter(j => j.fitScore >= minFitVal);
+      }
+
+      // Sorting
+      const sortVal = document.getElementById('sort-select').value;
+      if (sortVal === 'fit-desc') {
+        filtered.sort((a, b) => b.fitScore - a.fitScore);
+      } else if (sortVal === 'interest-desc') {
+        filtered.sort((a, b) => b.interestScore - a.interestScore);
+      } else if (sortVal === 'date-desc') {
+        filtered.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted));
+      } else if (sortVal === 'company-asc') {
+        filtered.sort((a, b) => a.company.localeCompare(b.company));
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-8">
+            <i data-lucide="filter-x" class="w-10 h-10 text-slate-400 mx-auto mb-2"></i>
+            <h3 class="text-sm font-bold text-slate-700">No opportunities match the selected criteria</h3>
+            <p class="text-xs text-slate-500 mt-1">Try relaxing your minimum fit score or clear your search terms.</p>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = filtered.map(job => createJobCardHTML(job)).join('');
+      }
+      lucide.createIcons();
+    }
+
+    function applyFilters() {
+      renderMatrixGrid();
+    }
+
+    function updateSliderLabel(val) {
+      document.getElementById('slider-val').innerText = val + '%';
+    }
+
+    function updateJobStatus(jobId, newStatus) {
+      const job = jobsData.find(j => j.id === jobId);
+      if (job) {
+        job.status = newStatus;
+        renderAllViews();
+      }
+    }
+
+    function openJobModal(jobId) {
+      const job = jobsData.find(j => j.id === jobId);
+      if (!job) return;
+
+      currentActiveJob = job;
+
+      document.getElementById('modal-company').innerHTML = `<i data-lucide="building-2" class="w-4 h-4 text-columbia-navy"></i> ${job.company}`;
+      document.getElementById('modal-title').innerText = job.title;
+      document.getElementById('modal-source-badge').innerText = job.source;
+      document.getElementById('modal-location').innerHTML = `<i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${job.location}`;
+      document.getElementById('modal-date').innerHTML = `<i data-lucide="calendar" class="w-3.5 h-3.5"></i> Posted ${new Date(job.datePosted).toLocaleDateString()}`;
+
+      document.getElementById('modal-fit-score').innerText = `${job.fitScore}%`;
+      document.getElementById('modal-interest-score').innerText = `${job.interestScore}%`;
+      document.getElementById('modal-fit-reasoning').innerText = job.scoring.reasoning;
+
+      document.getElementById('score-exp').innerText = `${job.scoring.exp}/25`;
+      document.getElementById('score-func').innerText = `${job.scoring.func}/20`;
+      document.getElementById('score-ind').innerText = `${job.scoring.ind}/15`;
+      document.getElementById('score-edu').innerText = `${job.scoring.edu}/10`;
+      document.getElementById('score-tech').innerText = `${job.scoring.tech}/10`;
+      document.getElementById('score-sen').innerText = `${job.scoring.sen}/10`;
+
+      // Network rendering
+      const netBox = document.getElementById('modal-network-box');
+      const netList = document.getElementById('modal-network-list');
+      if (job.network && job.network.length > 0) {
+        netBox.classList.remove('hidden');
+        netList.innerHTML = job.network.map(n => `
+          <div class="bg-white p-3 rounded-xl border border-emerald-100 flex justify-between items-center text-xs">
+            <div>
+              <span class="font-extrabold text-slate-900">${n.name}</span> • <span class="text-slate-600 font-semibold">${n.title}</span>
+              <p class="text-slate-500 mt-0.5 text-[11px]">${n.reason}</p>
+            </div>
+            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded-md text-[10px] shrink-0">
+              ${n.degree}
+            </span>
+          </div>
+        `).join('');
+      } else {
+        netBox.classList.add('hidden');
+      }
+
+      // Strengths & Recommendations
+      document.getElementById('modal-strengths').innerHTML = job.strengths.map(s => `
+        <li class="flex items-start gap-2">
+          <span class="text-emerald-500 font-bold">•</span>
+          <span>${s}</span>
+        </li>
+      `).join('');
+
+      document.getElementById('modal-recommendations').innerHTML = job.recommendations.map(r => `
+        <li class="flex items-start gap-2">
+          <span class="text-amber-500 font-bold">•</span>
+          <span>${r}</span>
+        </li>
+      `).join('');
+
+      document.getElementById('modal-description').innerText = job.description;
+      document.getElementById('modal-status-select').value = job.status;
+      document.getElementById('modal-apply-btn').href = job.sourceUrl;
+
+      // Show Backdrop and animate modal
+      const backdrop = document.getElementById('modal-backdrop');
+      const container = document.getElementById('modal-container');
+      backdrop.classList.remove('hidden');
+      
+      setTimeout(() => {
+        backdrop.classList.remove('opacity-0');
+        container.classList.remove('scale-95');
+        container.classList.add('scale-100');
+      }, 10);
+
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      const backdrop = document.getElementById('modal-backdrop');
+      const container = document.getElementById('modal-container');
+      
+      backdrop.classList.add('opacity-0');
+      container.classList.remove('scale-100');
+      container.classList.add('scale-95');
+
+      setTimeout(() => {
+        backdrop.classList.add('hidden');
+        currentActiveJob = null;
+      }, 200);
+    }
+
+    function updateJobStatusFromModal(newStatus) {
+      if (currentActiveJob) {
+        updateJobStatus(currentActiveJob.id, newStatus);
+      }
+    }
+
+    function triggerSyncPipeline() {
+      const icon = document.getElementById('sync-icon');
+      icon.classList.add('animate-spin');
+
+      setTimeout(() => {
+        // Add a simulated newly ingested job from 12Twenty
+        const newJob = {
+          id: `job-${Date.now()}`,
+          title: "Senior Product Strategy Manager - Sports & Media",
+          company: "Warner Bros. Discovery",
+          location: "New York, NY",
+          datePosted: new Date().toISOString(),
+          isToday: true,
+          source: "12Twenty",
+          sourceUrl: "https://business-columbia.12twenty.com/job/2001",
+          status: "NOT_APPLIED",
+          description: "Define distribution, direct-to-consumer monetization, and product strategy for HBO Max and Bleacher Report digital properties.",
+          fitScore: 89,
+          interestScore: 95,
+          scoring: { exp: 23, func: 18, ind: 14, edu: 10, tech: 8, sen: 9, reasoning: "Direct alignment with CBS Media & Tech concentration and EY quantitative background." },
+          strengths: ["Strong corporate advisory experience", "Clear functional strategy fit"],
+          recommendations: ["Highlight media valuation coursework from Columbia Business School."],
+          network: [
+            { name: "Sarah Jenkins", title: "Director of Product", degree: "CBS MBA '21", reason: "Columbia Media Association Alum" }
+          ]
+        };
+
+        jobsData.unshift(newJob);
+        icon.classList.remove('animate-spin');
+        renderAllViews();
+      }, 1200);
+    }
+
+    function simulateUpload() {
+      const inputTitle = document.getElementById('resume-version-title').value.trim();
+      const statusBox = document.getElementById('upload-status');
+      
+      statusBox.classList.remove('hidden');
+
+      setTimeout(() => {
+        statusBox.classList.add('hidden');
+        if (inputTitle) {
+          document.getElementById('parsed-resume-title').innerText = `${inputTitle}.pdf`;
+        }
+        alert("Resume successfully uploaded, parsed, and synced with Columbia 12Twenty job fit scoring engine.");
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
